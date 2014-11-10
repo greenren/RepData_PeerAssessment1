@@ -33,8 +33,21 @@ data$date <- ymd(data$date)
 ```
 
 ## What is mean total number of steps taken per day?
+Create a table with the plyr package that sums the number of steps per day. 
 
+```r
+library(plyr)
+stepsperday <- ddply(data, .(date), summarize, steps=sum(steps, na.rm=TRUE))
+```
 
+Then make a ggplot histogram of the total number of steps taken each day.
+
+```r
+library(ggplot2)
+ggplot(stepsperday, aes(date, steps)) + geom_histogram(stat="identity") + ggtitle(("Number of steps per day"))
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 ## What is the average daily activity pattern?
 
