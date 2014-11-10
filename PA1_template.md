@@ -49,6 +49,24 @@ ggplot(stepsperday, aes(date, steps)) + geom_histogram(stat="identity") + ggtitl
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
+Calculate the mean and median total of steps taken per day.
+
+```r
+mean(stepsperday$steps)
+```
+
+```
+## [1] 9354.23
+```
+
+```r
+median(stepsperday$steps)
+```
+
+```
+## [1] 10395
+```
+
 ## What is the average daily activity pattern?
 
 

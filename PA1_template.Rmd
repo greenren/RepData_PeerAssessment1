@@ -37,6 +37,12 @@ library(ggplot2)
 ggplot(stepsperday, aes(date, steps)) + geom_histogram(stat="identity") + ggtitle(("Number of steps per day"))
 ```
 
+Calculate the mean and median total of steps taken per day.
+```{r echo=TRUE}
+mean(stepsperday$steps)
+median(stepsperday$steps)
+```
+
 ## What is the average daily activity pattern?
 
 
