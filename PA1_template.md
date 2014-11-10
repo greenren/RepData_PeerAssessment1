@@ -68,9 +68,25 @@ median(stepsperday$steps)
 ```
 
 ## What is the average daily activity pattern?
+Calculate the average number of steps taken in each five number interval (i.e. the same daily interval averaged across all days) and create a time series plot.
 
+```r
+averageinterval <- ddply(data, .(interval), summarize, steps=mean(steps, na.rm=TRUE))
+ggplot(averageinterval, aes(interval, steps)) + geom_line() + ggtitle("Average steps per 5-minute interval")
+```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
+Find the 5-minute interval which contains the maximum number of steps on average, across all the days in the dataset.
+
+```r
+head(averageinterval[with(averageinterval, order(steps, decreasing=TRUE)),], n=1)  
+```
+
+```
+##     interval    steps
+## 104      835 206.1698
+```
 ## Imputing missing values
 
 
