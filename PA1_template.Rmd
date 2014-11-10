@@ -7,8 +7,22 @@ output:
 
 
 ## Loading and preprocessing the data
-
-
+First unzip the activity.zip file, if activity.csv is not yet in the working directory.
+```{r echo=TRUE}
+if(!'activity.csv' %in% dir()){
+    unzip('activity.zip')
+    unlink('activity.zip')}
+```
+Load the data and show first six rows.
+```{r echo=TRUE}
+data <- read.csv('activity.csv', header=TRUE, stringsAsFactors=FALSE)
+head(data)
+```
+Transform the date variable into datetime objects with the lubridate package.
+```{r echo=TRUE}
+library(lubridate)
+data$date <- ymd(data$date)
+```
 
 ## What is mean total number of steps taken per day?
 
