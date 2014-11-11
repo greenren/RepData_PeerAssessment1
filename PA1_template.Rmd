@@ -61,7 +61,7 @@ Count the number of missing values in the data set:
 sum(is.na(data))          # in total
 sum(is.na(data$steps))    # in steps variable
 ```
-Fill in the missing values with the mean value for that interval and add this to a new dataset:
+We'll use the mean number of steps for each interval to fill in these missing values and add these to a new dataset:
 ```{r echo=TRUE}
 # Subset the missing data
 missing <- is.na(data$steps)
@@ -91,4 +91,18 @@ Unsurprisingly, the main difference with the histogram above is that there are n
 mean(new_stepsperday$steps)
 median(new_stepsperday$steps)
 ```
+
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r echo=TRUE}
+wkdays <- weekdays(data$date)
+wkday_bool <- ifelse(wkdays %in% c("Sunday", "Saterday"), 1, 0)
+weekday_factor <- factor(wkday_bool, labels=c("weekday", "weekend"))
+data$weekdayfactor <- weekday_factor
+```
+
+```{r echo=TRUE}
+averageinterval <- ddply(data, .(weekdayfactor, interval), summarize, steps=mean(steps, na.rm=TRUE))
+ggplot(averageinterval, aes(interval, steps)) + geom_line() + 
+    ggtitle("Average steps per 5-minute interval separated by weekend/weekdays") + facet_grid(weekdayfactor ~ .)
+```
