@@ -77,7 +77,7 @@ ggplot(averageinterval, aes(interval, steps)) + geom_line() + ggtitle("Average s
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
-Find the 5-minute interval which contains the maximum number of steps on average, across all the days in the dataset.
+The 5-minute interval which contains the maximum number of steps on average, across all the days in the dataset:
 
 ```r
 head(averageinterval[with(averageinterval, order(steps, decreasing=TRUE)),], n=1)  
@@ -88,7 +88,46 @@ head(averageinterval[with(averageinterval, order(steps, decreasing=TRUE)),], n=1
 ## 104      835 206.1698
 ```
 ## Imputing missing values
+Count the number of missing values in the data set:
 
+```r
+sum(is.na(data))          # in total
+```
 
+```
+## [1] 2304
+```
+
+```r
+sum(is.na(data$steps))    # in steps variable
+```
+
+```
+## [1] 2304
+```
+Fill in the missing values with the mean value for that interval and add this to a new dataset:
+
+```r
+# Subset the missing data
+missing <- is.na(data$steps)
+missing_entries <- data[missing, ]
+# Calculate the means for each interval
+meaninterval <- ddply(data, .(interval), summarize, steps=mean(steps, na.rm=TRUE))
+# Create a vector with the average step values for all the missing data
+imputed_values <- vector()
+for(interval in missing_entries$interval){
+    new_step <- meaninterval[meaninterval$interval==interval, 'steps']
+    imputed_values <- c(imputed_values, new_step)
+    }
+# Add this vector to a new copy of the dataset
+new_data <- data
+new_data[missing, 'steps'] <- imputed_values
+# Verify that there are no longer any missing data in the new dataset
+sum(is.na(new_data))
+```
+
+```
+## [1] 0
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
