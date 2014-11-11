@@ -87,6 +87,7 @@ head(averageinterval[with(averageinterval, order(steps, decreasing=TRUE)),], n=1
 ##     interval    steps
 ## 104      835 206.1698
 ```
+
 ## Imputing missing values
 Count the number of missing values in the data set:
 
@@ -129,5 +130,30 @@ sum(is.na(new_data))
 ```
 ## [1] 0
 ```
+Now that the missing data has been imputed, let's see how the new data differs from the original data. First, by creating a histogram of the total number of steps taken per day:
 
+```r
+new_stepsperday <- ddply(new_data, .(date), summarize, steps=sum(steps))
+ggplot(new_stepsperday, aes(date, steps)) + geom_histogram(stat="identity") + ggtitle(("Number of steps per day (missing values imputed)"))  
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+
+Unsurprisingly, the main difference with the histogram above is that there are now fewer days without total steps. Calculating the mean and median total of steps taken per day, we see that both values have increased substantially compared to the previous calculations:  
+
+```r
+mean(new_stepsperday$steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
+median(new_stepsperday$steps)
+```
+
+```
+## [1] 10766.19
+```
 ## Are there differences in activity patterns between weekdays and weekends?
